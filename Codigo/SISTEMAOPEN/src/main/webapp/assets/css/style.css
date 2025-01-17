@@ -1,0 +1,144 @@
+
+body {
+    background-color: #f8f9fa;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.login-container {
+    max-width: 450px;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.login-container img {
+    display: block;
+    margin: 0 auto 20px;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.login-container h1 {
+    font-size: 1.8rem;
+    color: #007bff;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group-text {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+}
+
+.input-group-text i {
+    font-size: 1.5rem;
+}
+
+.form-control {
+    height: 50px;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    height: 50px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.forgot-password {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.forgot-password a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.toggle-password {
+    cursor: pointer;
+}
+
+
+
+
+
+
+/* Ajustar margen superior e izquierdo para el contenido */
+.content-wrapper {
+    margin-left: 250px; /* Espacio para el sidebar */
+    margin-top: 60px; /* Espacio para el topbar */
+    padding: 20px;
+    transition: margin-left 0.3s ease-in-out;
+}
+
+/* Contenedor principal */
+.table-container {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px; /* Espaciado interno */
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    width: 110%; /* Ampliar ancho del contenedor */
+    height: 85vh; /* Altura del contenedor */
+    margin: auto; /* Centrar horizontal y verticalmente */
+    margin-left: -100px; /* Mover hacia la izquierda */
+    display: flex;
+    flex-direction: column; /* Alinear elementos verticalmente */
+    justify-content: flex-start; /* Alinear elementos al inicio */
+}
+
+/* Botón de crear usuario */
+.btn-primary {
+    font-size: 1.1rem; /* Tamaño de fuente mayor */
+    padding: 12px 25px;
+    margin-bottom: 20px;
+    align-self: flex-start; /* Alinear el botón a la izquierda */
+}
+
+/* Tabla */
+.table-responsive {
+    flex-grow: 1; /* Ocupar todo el espacio disponible */
+    overflow-y: auto; /* Habilitar scroll vertical */
+}
+
+.table thead th {
+    font-size: 1.2rem; /* Tamaño mayor para los encabezados */
+    padding: 15px;
+}
+
+.table tbody td {
+    font-size: 1.1rem; /* Tamaño del texto */
+    padding: 15px;
+}
+
+/* General para el cuerpo */
+body {
+    background-color: #f8f9fa; /* Fondo claro */
+}
