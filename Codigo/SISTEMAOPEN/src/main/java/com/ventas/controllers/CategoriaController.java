@@ -20,60 +20,23 @@ public class CategoriaController extends HttpServlet {
     public CategoriaController() {
         this.categoriaModel = new CategoriaModel();
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String op = request.getParameter("op");
         if (op == null || op.isEmpty() || "listar".equals(op)) {
             listarCategorias(request, response);
-        }
+      }
     }
 
-
+    // Método para listar categorías
     private void listarCategorias(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Categoria> listaCategorias = categoriaModel.listarCategorias();
-        request.setAttribute("listaCategorias", listaCategorias); 
+        request.setAttribute("listaCategorias", listaCategorias);
         request.getRequestDispatcher("Categorias/listaCategorias.jsp").forward(request, response);
     }
 
-
-    private void actualizarEstado(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        try {
-            String idCategoriaParam = request.getParameter("id");
-            String estadoParam = request.getParameter("estado");
-
-            if (idCategoriaParam == null || estadoParam == null) {
-                response.getWriter().write("{\"success\": false, \"message\": \"Parámetros faltantes.\"}");
-                return;
-            }
-
-            int idCategoria = Integer.parseInt(idCategoriaParam);
-            String estado = estadoParam;
-            int filasAfectadas = categoriaModel.actualizarEstadoCategoria(idCategoria, estado);
-
-            if (filasAfectadas > 0) {
-                response.getWriter().write("{\"success\": true}");
-            } else {
-                response.getWriter().write("{\"success\": false, \"message\": \"No se pudo actualizar el estado.\"}");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.getWriter().write("{\"success\": false, \"message\": \"Error interno del servidor.\"}");
-        }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String op = request.getParameter("op");
-        if ("insertar".equals(op)) {
-            insertarCategoria(request, response);
-        } else if ("modificar".equals(op)) {
-            modificarCategoria(request, response);
-        }
-    }
-
+    // Método para insertar una nueva categoría
     private void insertarCategoria(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Categoria categoria = new Categoria();
         categoria.setNombreCategoria(request.getParameter("nombre_categoria"));
@@ -97,6 +60,7 @@ public class CategoriaController extends HttpServlet {
         response.sendRedirect("CategoriaController");
     }
 
+    // Método para modificar una categoría
     private void modificarCategoria(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Categoria categoria = new Categoria();
         try {
@@ -119,5 +83,15 @@ public class CategoriaController extends HttpServlet {
             request.getSession().setAttribute("tipoMensaje", "error");
         }
         response.sendRedirect("CategoriaController");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String op = request.getParameter("op");
+        if ("insertar".equals(op)) {
+            insertarCategoria(request, response);
+        } else if ("modificar".equals(op)) {
+            modificarCategoria(request, response);
+        }
     }
 }
