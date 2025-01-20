@@ -35,8 +35,6 @@ public class ProductosController extends HttpServlet {
             eliminarProducto(request, response);
         } else if ("obtener".equals(op)) {
             obtenerProducto(request, response);
-        } else if ("crear".equals(op)) {
-            cargarFormularioCrear(request, response);
         }
     }
 
@@ -50,30 +48,6 @@ public class ProductosController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al listar productos.");
         }
     }
-
-    private void cargarFormularioCrear(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            // Llama al modelo para obtener las categorías
-            List<Categoria> listaCategorias = categoriaModel.listarCategorias();
-
-            // Pasa la lista de categorías al JSP
-            request.setAttribute("listaCategorias", listaCategorias);
-            
-            System.out.println("Categorías cargadas: " + listaCategorias.size());
-            for (Categoria categoria : listaCategorias) {
-                System.out.println("ID: " + categoria.getIdCategoria() + ", Nombre: " + categoria.getNombreCategoria());
-            }
-
-
-            // Redirige al JSP que contiene el modal
-            request.getRequestDispatcher("Modals/modalNuevoProducto.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al cargar las categorías para el formulario.");
-        }
-    }
-
-
 
     private void obtenerProducto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -174,6 +148,5 @@ public class ProductosController extends HttpServlet {
         }
         response.sendRedirect("ProductosController");
     }
-    
     
 }

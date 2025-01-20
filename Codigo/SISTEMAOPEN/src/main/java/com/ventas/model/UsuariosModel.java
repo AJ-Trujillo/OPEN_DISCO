@@ -120,8 +120,6 @@ public class UsuariosModel extends Conexion {
                     usuario.setContrasena(rs.getString("contrasena"));
                     usuario.setRol(rs.getString("rol"));
                     usuario.setEstado(rs.getInt("estado"));
-
-                    // Opcional: incluir estas líneas solo si `dni`, `apellido_paterno`, etc. existen
                     usuario.setDni(rs.getString("dni"));
                     usuario.setApellidoPaterno(rs.getString("apellido_paterno"));
                     usuario.setApellidoMaterno(rs.getString("apellido_materno"));
