@@ -30,7 +30,7 @@ CREATE TABLE `categoria` (
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `fecha_modificacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `categoria` (
 
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (1,'Electrónicos','Productos electrónicos como TV, celulares','activo','2025-01-17 17:21:36','2025-01-17 21:55:56'),(2,'DSFDF','DF','activo','2025-01-17 18:07:20','2025-01-17 21:07:30'),(3,'dsfsdf','drf','activo','2025-01-17 18:38:47','2025-01-17 18:38:47'),(4,'sdf','fff','activo','2025-01-17 19:01:08','2025-01-17 19:01:08'),(5,'sdf','dsf','activo','2025-01-17 19:08:04','2025-01-17 19:08:04'),(6,'werty','sdfg','activo','2025-01-17 20:39:19','2025-01-17 20:39:19'),(7,'gfgffdf','Hola','activo','2025-01-17 21:56:06','2025-01-17 21:56:06');
+INSERT INTO `categoria` VALUES (1,'Electrónicos','Productos electrónicos como TV, celulares','activo','2025-01-17 17:21:36','2025-01-17 21:55:56'),(2,'DSFDF','DF','activo','2025-01-17 18:07:20','2025-01-17 21:07:30'),(3,'dsfsdf','drf','activo','2025-01-17 18:38:47','2025-01-17 18:38:47'),(4,'sdf','fff','activo','2025-01-17 19:01:08','2025-01-17 19:01:08'),(5,'sdf','dsf','activo','2025-01-17 19:08:04','2025-01-17 19:08:04'),(6,'werty','sdfg','activo','2025-01-17 20:39:19','2025-01-17 20:39:19'),(7,'gfgffdf','Hola','activo','2025-01-17 21:56:06','2025-01-17 21:56:06'),(8,'Gaseosa','Guarana, KR, INCA, COCACOLA','activo','2025-01-19 18:38:35','2025-01-19 18:38:35');
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,8 +247,8 @@ CREATE TABLE `usuarios` (
   `edad` int NOT NULL,
   `sexo` enum('M','F') NOT NULL,
   `correo` varchar(100) NOT NULL,
-  `dni` varchar(20) NOT NULL,
-  `contrasena` varchar(255) NOT NULL,
+  `dni` varchar(8) NOT NULL,
+  `contrasena` varchar(45) NOT NULL,
   `rol` enum('administrador','usuario') NOT NULL,
   `fecha_registro` datetime DEFAULT CURRENT_TIMESTAMP,
   `estado` int NOT NULL,
@@ -263,7 +263,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (2,'pepe1','figueroa','nunez',20,'M','pepe@gmail.com','1234567','12','administrador','2025-01-11 21:56:16',1),(3,'juanito','arenales','pinedo',20,'M','juanito@gmail.com','12345677','123','administrador','2025-01-12 13:28:27',0),(4,'fabian','fernandez','peperere',22,'M','fabian@gmail.com','12345678','12','administrador','2025-01-12 21:48:01',1),(5,'jorge','perez','peperere',20,'M','jorge@gmail.com','62906799','123','administrador','2025-01-12 21:54:12',1),(6,'visca barca','Bernaleo','cataluna',12,'M','barcelona@gmail.com','2345','2-5','administrador','2025-01-12 21:57:04',1),(7,'rafael','arenales','velaa',24,'M','rafael@gmail.com','62906799','12','administrador','2025-01-13 03:49:31',1),(9,'rafael1','perez','pinedo',13,'M','rafaelj@gmail.com','62906798','M2','usuario','2025-01-13 04:31:02',0),(11,'pio','pio','pio',44,'F','pio@gmail.com','12345','12345','administrador','2025-01-17 11:35:33',0),(12,'sdfg','sdfg','sdfg',26,'M','juanito11@gmail.com','1234544','2345','usuario','2025-01-17 16:54:59',0);
+INSERT INTO `usuarios` VALUES (2,'pepe1','figueroa','nunez',20,'M','pepe@gmail.com','1234567','12','administrador','2025-01-11 21:56:16',1),(3,'juanito','arenales','pinedo',20,'M','juanito@gmail.com','12345677','123','administrador','2025-01-12 13:28:27',0),(4,'fabian','fernandez','peperere',22,'M','fabian@gmail.com','12345678','12','administrador','2025-01-12 21:48:01',1),(5,'jorge','perez','peperere',20,'M','jorge@gmail.com','62906799','123','administrador','2025-01-12 21:54:12',1),(6,'visca barca','Bernaleo','cataluna',12,'M','barcelona@gmail.com','2345','claveSecreta123','administrador','2025-01-12 21:57:04',1),(7,'rafael','arenales','velaa',24,'M','rafael@gmail.com','62906799','12','administrador','2025-01-13 03:49:31',1),(9,'rafael1','perez','pinedo',13,'M','rafaelj@gmail.com','62906798','M2','usuario','2025-01-13 04:31:02',0),(11,'pio','pio','pio',44,'F','pio@gmail.com','12345','SignatureAlgorithm.HS256','administrador','2025-01-17 11:35:33',1),(12,'sdfg','sdfg','sdfg',26,'M','juanito11@gmail.com','1234544','2345','usuario','2025-01-17 16:54:59',0);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -665,6 +665,25 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_obtenerNombresCategorias` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_obtenerNombresCategorias`()
+BEGIN
+ SELECT id_categoria, nombre_categoria FROM categoria;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -675,4 +694,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-17 17:12:13
+-- Dump completed on 2025-01-19 23:21:45
