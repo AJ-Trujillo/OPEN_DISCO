@@ -26,7 +26,7 @@ public class CategoriaController extends HttpServlet {
         String op = request.getParameter("op");
         if (op == null || op.isEmpty() || "listar".equals(op)) {
             listarCategorias(request, response);
-      }
+        }
     }
 
     // Método para listar categorías
@@ -36,8 +36,34 @@ public class CategoriaController extends HttpServlet {
         request.getRequestDispatcher("Categorias/listaCategorias.jsp").forward(request, response);
     }
 
+    // Método para validar los campos de categoría
+    private String validarCategoria(HttpServletRequest request) {
+        String nombreCategoria = request.getParameter("nombre_categoria");
+        String descripcion = request.getParameter("descripcion");
+        String estado = request.getParameter("estado");
+
+        if (nombreCategoria == null || nombreCategoria.trim().isEmpty()) {
+            return "El nombre de la categoría es obligatorio.";
+        }
+        if (descripcion == null || descripcion.trim().isEmpty()) {
+            return "La descripción de la categoría es obligatoria.";
+        }
+        if (estado == null || (!estado.equals("activo") && !estado.equals("inactivo"))) {
+            return "El estado de la categoría debe ser 'activo' o 'inactivo'.";
+        }
+        return null;
+    }
+
     // Método para insertar una nueva categoría
     private void insertarCategoria(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String error = validarCategoria(request);
+        if (error != null) {
+            request.getSession().setAttribute("mensaje", error);
+            request.getSession().setAttribute("tipoMensaje", "error");
+            response.sendRedirect("CategoriaController?op=insertar");
+            return;
+        }
+
         Categoria categoria = new Categoria();
         categoria.setNombreCategoria(request.getParameter("nombre_categoria"));
         categoria.setDescripcion(request.getParameter("descripcion"));
@@ -62,6 +88,14 @@ public class CategoriaController extends HttpServlet {
 
     // Método para modificar una categoría
     private void modificarCategoria(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String error = validarCategoria(request);
+        if (error != null) {
+            request.getSession().setAttribute("mensaje", error);
+            request.getSession().setAttribute("tipoMensaje", "error");
+            response.sendRedirect("CategoriaController?op=modificar&id_categoria=" + request.getParameter("id_categoria"));
+            return;
+        }
+
         Categoria categoria = new Categoria();
         try {
             categoria.setIdCategoria(Integer.parseInt(request.getParameter("id_categoria")));

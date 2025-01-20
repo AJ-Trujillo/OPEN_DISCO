@@ -30,6 +30,7 @@ public class UsuariosController extends HttpServlet {
         }
     }
 
+    // Método para listar usuarios
     private void listarUsuarios(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             List<Usuario> listaUsuarios = usuariosModel.listarUsuarios();
@@ -41,19 +42,46 @@ public class UsuariosController extends HttpServlet {
         }
     }
 
+    // Método para validar los parámetros de actualización de estado
+    private String validarParametrosEstado(String idUsuarioParam, String estadoParam) {
+        if (idUsuarioParam == null || idUsuarioParam.trim().isEmpty()) {
+            return "El ID del usuario es obligatorio.";
+        }
+        if (estadoParam == null || estadoParam.trim().isEmpty()) {
+            return "El estado es obligatorio.";
+        }
+        try {
+            Integer.parseInt(idUsuarioParam);
+        } catch (NumberFormatException e) {
+            return "El ID del usuario debe ser un número válido.";
+        }
+        try {
+            int estado = Integer.parseInt(estadoParam);
+            if (estado != 0 && estado != 1) {
+                return "El estado debe ser 0 (inactivo) o 1 (activo).";
+            }
+        } catch (NumberFormatException e) {
+            return "El estado debe ser un número válido (0 o 1).";
+        }
+        return null;
+    }
+
+    // Método para actualizar el estado de un usuario
     private void actualizarEstado(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
+        String idUsuarioParam = request.getParameter("id");
+        String estadoParam = request.getParameter("estado");
+
+        // Validar parámetros
+        String error = validarParametrosEstado(idUsuarioParam, estadoParam);
+        if (error != null) {
+            response.getWriter().write("{\"success\": false, \"message\": \"" + error + "\"}");
+            return;
+        }
+
         try {
-            String idUsuarioParam = request.getParameter("id");
-            String estadoParam = request.getParameter("estado");
-
-            if (idUsuarioParam == null || estadoParam == null) {
-                response.getWriter().write("{\"success\": false, \"message\": \"Parámetros faltantes.\"}");
-                return;
-            }
-
             int idUsuario = Integer.parseInt(idUsuarioParam);
             int estado = Integer.parseInt(estadoParam);
             int filasAfectadas = usuariosModel.actualizarEstado(idUsuario, estado);
