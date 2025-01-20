@@ -149,9 +149,30 @@ public class ProductosModel extends Conexion {
         return producto;
     }
 
-    public List<Categoria> obtenerCategorias() {
+    public String obtenerNombreCategoriaPorId(int idCategoria) {
+        String nombreCategoria = null;
+        String sql = "CALL sp_obtenerNombreCategoria(?)";
+
+        try (Connection conexion = this.abrirConexion();
+             CallableStatement cs = conexion.prepareCall(sql)) {
+
+            cs.setInt(1, idCategoria);
+
+            try (ResultSet rs = cs.executeQuery()) {
+                if (rs.next()) {
+                    nombreCategoria = rs.getString("nombre_categoria");
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(ProductosModel.class.getName()).log(Level.SEVERE, "Error al obtener nombre de la categoría", e);
+        }
+
+        return nombreCategoria;
+    }
+
+    public List<Categoria> listarCategorias() {
         List<Categoria> listaCategorias = new ArrayList<>();
-        String sql = "CALL sp_obtenerNombresCategorias()";
+        String sql = "CALL sp_listarCategorias()";
 
         try (Connection conexion = this.abrirConexion();
              CallableStatement cs = conexion.prepareCall(sql);
@@ -164,7 +185,7 @@ public class ProductosModel extends Conexion {
                 listaCategorias.add(categoria);
             }
         } catch (SQLException e) {
-            Logger.getLogger(ProductosModel.class.getName()).log(Level.SEVERE, "Error al obtener categorías", e);
+            Logger.getLogger(ProductosModel.class.getName()).log(Level.SEVERE, "Error al listar categorías", e);
         }
 
         return listaCategorias;
