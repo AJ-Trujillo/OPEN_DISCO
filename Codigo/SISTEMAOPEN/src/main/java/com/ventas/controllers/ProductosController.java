@@ -23,7 +23,7 @@ public class ProductosController extends HttpServlet {
 
     public ProductosController() {
         this.productosModel = new ProductosModel();
-        this.categoriaModel = new CategoriaModel(); // Instancia del modelo de categorías
+        this.categoriaModel = new CategoriaModel();
     }
 
     @Override
@@ -40,9 +40,9 @@ public class ProductosController extends HttpServlet {
 
     private void listarProductos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<Producto> listaProductos = productosModel.listarProductos(); // Carga los productos desde el modelo
-            request.setAttribute("listaProductos", listaProductos); // Pasa la lista al JSP
-            request.getRequestDispatcher("Productos/listaProductos.jsp").forward(request, response); // Reenvía al JSP
+            List<Producto> listaProductos = productosModel.listarProductos();
+            request.setAttribute("listaProductos", listaProductos);
+            request.getRequestDispatcher("Productos/listaProductos.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al listar productos.");
@@ -53,14 +53,9 @@ public class ProductosController extends HttpServlet {
         try {
             int idProducto = Integer.parseInt(request.getParameter("id"));
             Producto producto = productosModel.obtenerProductoPorId(idProducto);
-
-            // Obtener la lista de categorías
             List<Categoria> listaCategorias = categoriaModel.listarCategorias();
-
-            // Enviar datos al JSP
             request.setAttribute("producto", producto);
             request.setAttribute("listaCategorias", listaCategorias);
-
             request.getRequestDispatcher("Productos/editarProducto.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,7 +93,40 @@ public class ProductosController extends HttpServlet {
         }
     }
 
+    private String validarProducto(HttpServletRequest request) {
+        String nombreProducto = request.getParameter("nombre_producto");
+        String descripcion = request.getParameter("descripcion_producto");
+        String precio = request.getParameter("precio_producto");
+        String stock = request.getParameter("cantidad_producto");
+        String categoriaId = request.getParameter("categoria_producto");
+
+        if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
+            return "El nombre del producto es obligatorio.";
+        }
+        if (descripcion == null || descripcion.trim().isEmpty()) {
+            return "La descripción del producto es obligatoria.";
+        }
+        if (precio == null || !precio.matches("\\d+(\\.\\d{1,2})?")) {
+            return "El precio debe ser un número válido.";
+        }
+        if (stock == null || !stock.matches("\\d+")) {
+            return "La cantidad debe ser un número entero válido.";
+        }
+        if (categoriaId == null || !categoriaId.matches("\\d+")) {
+            return "Debe seleccionar una categoría válida.";
+        }
+        return null;
+    }
+
     private void insertarProducto(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String error = validarProducto(request);
+        if (error != null) {
+            request.getSession().setAttribute("mensaje", error);
+            request.getSession().setAttribute("tipoMensaje", "error");
+            response.sendRedirect("ProductosController?op=insertar");
+            return;
+        }
+
         Producto producto = new Producto();
         producto.setNombreProducto(request.getParameter("nombre_producto"));
         producto.setDescripcion(request.getParameter("descripcion_producto"));
@@ -124,6 +152,14 @@ public class ProductosController extends HttpServlet {
     }
 
     private void modificarProducto(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String error = validarProducto(request);
+        if (error != null) {
+            request.getSession().setAttribute("mensaje", error);
+            request.getSession().setAttribute("tipoMensaje", "error");
+            response.sendRedirect("ProductosController?op=modificar&id=" + request.getParameter("id"));
+            return;
+        }
+
         Producto producto = new Producto();
         try {
             producto.setIdProducto(Integer.parseInt(request.getParameter("id")));
@@ -148,5 +184,4 @@ public class ProductosController extends HttpServlet {
         }
         response.sendRedirect("ProductosController");
     }
-    
 }
