@@ -82,7 +82,7 @@ public class CategoriaModel extends Conexion {
             return 0;
         }
     }
-
+   
     // Método para actualizar el estado de una categoría
     public int actualizarEstadoCategoria(int idCategoria, String estado) {
         String sql = "CALL sp_actualizar_estado_categoria(?, ?)";
@@ -100,4 +100,23 @@ public class CategoriaModel extends Conexion {
             return 0;
         }
     }
+    public String obtenerNombreCategoriaPorId(int idCategoria) {
+        String nombreCategoria = null;
+        String sql = "CALL sp_obtenerNombreCategoria(?)";
+
+        try (Connection conexion = this.abrirConexion();
+             CallableStatement cs = conexion.prepareCall(sql)) {
+
+            cs.setInt(1, idCategoria);
+            try (ResultSet rs = cs.executeQuery()) {
+                if (rs.next()) {
+                    nombreCategoria = rs.getString("nombre_categoria");
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(CategoriaModel.class.getName()).log(Level.SEVERE, "Error al obtener nombre de la categoría", e);
+        }
+        return nombreCategoria;
+    }
+
 }

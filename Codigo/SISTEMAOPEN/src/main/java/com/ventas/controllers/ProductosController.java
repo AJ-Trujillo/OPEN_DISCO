@@ -28,20 +28,22 @@ public class ProductosController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String op = request.getParameter("op");
-        if (op == null || op.isEmpty()) {
-            listarProductos(request, response);
-        } else if ("eliminar".equals(op)) {
-            eliminarProducto(request, response);
-        } else if ("obtener".equals(op)) {
-            obtenerProducto(request, response);
-        }
+    	 String op = request.getParameter("op");
+    	    if (op == null || op.isEmpty()) {
+    	        listarProductos(request, response);
+    	    } else if ("eliminar".equals(op)) {
+    	        eliminarProducto(request, response);
+    	    } else if ("obtener".equals(op)) {
+    	        obtenerProducto(request, response);
+    	    }
     }
 
     private void listarProductos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             List<Producto> listaProductos = productosModel.listarProductos();
+            List<Categoria> listaCategorias = categoriaModel.listarCategorias(); // Obtener categorías
             request.setAttribute("listaProductos", listaProductos);
+            request.setAttribute("listaCategorias", listaCategorias);
             request.getRequestDispatcher("Productos/listaProductos.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -184,4 +186,5 @@ public class ProductosController extends HttpServlet {
         }
         response.sendRedirect("ProductosController");
     }
+
 }
