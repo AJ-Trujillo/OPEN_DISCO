@@ -2,7 +2,6 @@ package com.ventas.controllers;
 
 import com.ventas.beans.Usuario;
 import com.ventas.model.UsuariosModel;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -69,74 +68,4 @@ public class UsuariosController extends HttpServlet {
             response.getWriter().write("{\"success\": false, \"message\": \"Error interno del servidor.\"}");
         }
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String op = request.getParameter("op");
-        if ("insertar".equals(op)) {
-            insertarUsuario(request, response);
-        } else if ("modificar".equals(op)) {
-            modificarUsuario(request, response);
-        }
-    }
-
-    private void insertarUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Usuario usuario = new Usuario();
-        usuario.setNombreUsuario(request.getParameter("nombre_usuario"));
-        usuario.setApellidoPaterno(request.getParameter("apellido_paterno"));
-        usuario.setApellidoMaterno(request.getParameter("apellido_materno"));
-        usuario.setDni(request.getParameter("dni"));
-        usuario.setCorreo(request.getParameter("correo"));
-        usuario.setSexo(request.getParameter("sexo"));
-        usuario.setEdad(Integer.parseInt(request.getParameter("edad")));
-        usuario.setContrasena(request.getParameter("contrasena"));
-        usuario.setRol(request.getParameter("rol"));
-
-        try {
-            int filasAfectadas = usuariosModel.insertarUsuario(usuario);
-            if (filasAfectadas > 0) {
-                request.getSession().setAttribute("mensaje", "Usuario creado exitosamente.");
-                request.getSession().setAttribute("tipoMensaje", "success");
-            } else {
-                request.getSession().setAttribute("mensaje", "No se pudo crear el usuario.");
-                request.getSession().setAttribute("tipoMensaje", "error");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.getSession().setAttribute("mensaje", "Error interno del servidor.");
-            request.getSession().setAttribute("tipoMensaje", "error");
-        }
-        response.sendRedirect("UsuariosController");
-    }
-
-    private void modificarUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Usuario usuario = new Usuario();
-        try {
-            usuario.setIdUsuario(Integer.parseInt(request.getParameter("id_usuario")));
-            usuario.setNombreUsuario(request.getParameter("nombre_usuario"));
-            usuario.setApellidoPaterno(request.getParameter("apellido_paterno"));
-            usuario.setApellidoMaterno(request.getParameter("apellido_materno"));
-            usuario.setDni(request.getParameter("dni"));
-            usuario.setCorreo(request.getParameter("correo"));
-            usuario.setSexo(request.getParameter("sexo"));
-            usuario.setEdad(Integer.parseInt(request.getParameter("edad")));
-            usuario.setContrasena(request.getParameter("contrasena"));
-            usuario.setRol(request.getParameter("rol"));
-
-            int filasAfectadas = usuariosModel.modificarUsuario(usuario);
-            if (filasAfectadas > 0) {
-                request.getSession().setAttribute("mensaje", "Usuario modificado exitosamente.");
-                request.getSession().setAttribute("tipoMensaje", "success");
-            } else {
-                request.getSession().setAttribute("mensaje", "No se pudo modificar el usuario.");
-                request.getSession().setAttribute("tipoMensaje", "error");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.getSession().setAttribute("mensaje", "Error interno del servidor.");
-            request.getSession().setAttribute("tipoMensaje", "error");
-        }
-        response.sendRedirect("UsuariosController");
-    }
-
 }
