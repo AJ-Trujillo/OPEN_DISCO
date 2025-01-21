@@ -6,7 +6,6 @@
     <button id="btnBack" class="btn btn-secondary mb-4 hidden fs-5">
         <i class="bi bi-arrow-left"></i> Regresar
     </button>
-    
 
     <div id="mainModules" class="fs-5">
         <div class="menu-item mb-4" data-module="usuarios">
@@ -17,7 +16,7 @@
                 <i class="bi bi-chevron-right"></i>
             </a>
         </div>
-        <div class="menu-item mb-4" data-module="productos">
+        <div class="menu-item mb-4" data-module="ventas">
             <a class="d-flex align-items-center justify-content-between py-3 px-3 rounded text-white" href="#">
                 <i class="bi bi-box-seam me-2"></i> Ventas
                 <i class="bi bi-chevron-right"></i>
@@ -30,17 +29,25 @@
             </a>
         </div>
     </div>
-  
-    <div id="usuariosSubmodules" class="hidden fs-5">
-       <a href="/SISTEMAOPEN/UsuariosController" class="d-flex align-items-center py-3 px-3 rounded text-white mb-2">
-    <i class="bi bi-people-fill me-2"></i> Usuarios
-</a>
 
+    <div id="usuariosSubmodules" class="hidden fs-5">
+        <a href="/SISTEMAOPEN/UsuariosController" class="d-flex align-items-center py-3 px-3 rounded text-white mb-2">
+            <i class="bi bi-people-fill me-2"></i> Usuarios
+        </a>
         <a href="/SISTEMAOPEN/ProductosController" class="d-flex align-items-center py-3 px-3 rounded text-white">
             <i class="bi bi-box-fill me-2"></i> Productos
         </a>
         <a href="/SISTEMAOPEN/CategoriaController" class="d-flex align-items-center py-3 px-3 rounded text-white">
             <i class="bi bi-tags-fill me-2"></i> Categoría
+        </a>
+    </div>
+
+    <div id="ventasSubmodules" class="hidden fs-5">
+        <a href="/SISTEMAOPEN/Ventas/RealizarVenta.jsp" class="d-flex align-items-center py-3 px-3 rounded text-white mb-2">
+            <i class="bi bi-cart-plus-fill me-2"></i> Realizar Venta
+        </a>
+        <a href="/SISTEMAOPEN/Ventas/listaVentas.jsp" class="d-flex align-items-center py-3 px-3 rounded text-white">
+            <i class="bi bi-list-check me-2"></i> Visualizar Ventas
         </a>
     </div>
 </div>
@@ -87,6 +94,20 @@
     .sidebar a i {
         margin-right: 10px;
     }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            transform: translateX(-240px);
+        }
+
+        .sidebar-visible {
+            transform: translateX(0);
+        }
+
+        .content-wrapper {
+            margin-left: 0;
+        }
+    }
 </style>
 
 <script>
@@ -95,17 +116,25 @@
     const content = document.getElementById('content');
     const mainModules = document.getElementById('mainModules');
     const usuariosSubmodules = document.getElementById('usuariosSubmodules');
+    const ventasSubmodules = document.getElementById('ventasSubmodules');
     const backToMainButton = document.getElementById('btnBack');
 
     toggleSidebarButton?.addEventListener('click', () => {
         sidebar.classList.toggle('sidebar-hidden');
-        content.classList.toggle('content-expanded');
+        content?.classList.toggle('content-expanded');
     });
 
-    // Mostrar submódulos y ocultar los módulos principales
+    // Mostrar submódulos de Usuarios
     document.querySelector('[data-module="usuarios"]')?.addEventListener('click', () => {
         mainModules.classList.add('hidden');
         usuariosSubmodules.classList.remove('hidden');
+        backToMainButton.classList.remove('hidden');
+    });
+
+    // Mostrar submódulos de Ventas
+    document.querySelector('[data-module="ventas"]')?.addEventListener('click', () => {
+        mainModules.classList.add('hidden');
+        ventasSubmodules.classList.remove('hidden');
         backToMainButton.classList.remove('hidden');
     });
 
@@ -113,6 +142,7 @@
     backToMainButton?.addEventListener('click', () => {
         mainModules.classList.remove('hidden');
         usuariosSubmodules.classList.add('hidden');
+        ventasSubmodules.classList.add('hidden');
         backToMainButton.classList.add('hidden');
     });
 </script>
