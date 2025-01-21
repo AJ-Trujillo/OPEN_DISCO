@@ -24,64 +24,72 @@ public class VentasController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String op = request.getParameter("op");
-        if (op == null || op.isEmpty()) {
-            listarVentas(request, response);
-        } else if ("eliminar".equals(op)) {
-            eliminarVenta(request, response);
-        } else if ("obtener".equals(op)) {
-            obtenerVenta(request, response);
-        }
-    }
-
-    private void listarVentas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<Venta> listaVentas = ventasModel.listarVentas();
-            request.setAttribute("listaVentas", listaVentas);
-            request.getRequestDispatcher("Ventas/listaVentas.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al listar ventas.");
-        }
-    }
-
-    private void obtenerVenta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            int idVenta = Integer.parseInt(request.getParameter("id"));
-            Venta venta = ventasModel.obtenerVentaPorId(idVenta);
-            request.setAttribute("venta", venta);
-            request.getRequestDispatcher("Ventas/detalleVenta.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al obtener venta.");
-        }
-    }
-
-    private void eliminarVenta(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            int idVenta = Integer.parseInt(request.getParameter("id"));
-            int filasAfectadas = ventasModel.eliminarVenta(idVenta);
-
-            if (filasAfectadas > 0) {
-                request.getSession().setAttribute("mensaje", "Venta eliminada exitosamente.");
-                request.getSession().setAttribute("tipoMensaje", "success");
+            if (op == null || op.isEmpty()) {
+                listarVentas(request, response);
             } else {
-                request.getSession().setAttribute("mensaje", "No se pudo eliminar la venta.");
-                request.getSession().setAttribute("tipoMensaje", "error");
+                switch (op) {
+                    case "eliminar":
+                        eliminarVenta(request, response);
+                        break;
+                    case "obtener":
+                        obtenerVenta(request, response);
+                        break;
+                    default:
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Operación no válida.");
+                        break;
+                }
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            request.getSession().setAttribute("mensaje", "Error interno del servidor.");
-            request.getSession().setAttribute("tipoMensaje", "error");
+            manejarError(response, "Error al procesar la solicitud", e);
         }
-        response.sendRedirect("VentasController");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String op = request.getParameter("op");
-        if ("insertar".equals(op)) {
-            insertarVenta(request, response);
+        try {
+            if ("insertar".equals(op)) {
+                insertarVenta(request, response);
+            } else if ("actualizar".equals(op)) {
+                actualizarVenta(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Operación no válida.");
+            }
+        } catch (Exception e) {
+            manejarError(response, "Error al procesar la solicitud", e);
         }
+    }
+
+    private void listarVentas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Venta> listaVentas = ventasModel.listarVentas();
+        request.setAttribute("listaVentas", listaVentas);
+        request.getRequestDispatcher("Ventas/listaVentas.jsp").forward(request, response);
+    }
+
+    private void obtenerVenta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idVenta = Integer.parseInt(request.getParameter("id"));
+        Venta venta = ventasModel.obtenerVentaPorId(idVenta);
+        if (venta != null) {
+            request.setAttribute("venta", venta);
+            request.getRequestDispatcher("Ventas/detalleVenta.jsp").forward(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Venta no encontrada.");
+        }
+    }
+
+    private void eliminarVenta(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int idVenta = Integer.parseInt(request.getParameter("id"));
+        int filasAfectadas = ventasModel.eliminarVenta(idVenta);
+
+        if (filasAfectadas > 0) {
+            request.getSession().setAttribute("mensaje", "Venta eliminada exitosamente.");
+            request.getSession().setAttribute("tipoMensaje", "success");
+        } else {
+            request.getSession().setAttribute("mensaje", "No se pudo eliminar la venta.");
+            request.getSession().setAttribute("tipoMensaje", "error");
+        }
+        response.sendRedirect("VentasController");
     }
 
     private void insertarVenta(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -91,22 +99,46 @@ public class VentasController extends HttpServlet {
         venta.setFechaVenta(request.getParameter("fecha_venta"));
         venta.setTotal(Double.parseDouble(request.getParameter("total")));
         venta.setMetodoPago(request.getParameter("metodo_pago"));
+        venta.setEstado(request.getParameter("estado"));
         venta.setObservaciones(request.getParameter("observaciones"));
 
-        try {
-            int filasAfectadas = ventasModel.insertarVenta(venta);
-            if (filasAfectadas > 0) {
-                request.getSession().setAttribute("mensaje", "Venta registrada exitosamente.");
-                request.getSession().setAttribute("tipoMensaje", "success");
-            } else {
-                request.getSession().setAttribute("mensaje", "No se pudo registrar la venta.");
-                request.getSession().setAttribute("tipoMensaje", "error");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.getSession().setAttribute("mensaje", "Error interno del servidor.");
+        int filasAfectadas = ventasModel.insertarVenta(venta);
+
+        if (filasAfectadas > 0) {
+            request.getSession().setAttribute("mensaje", "Venta registrada exitosamente.");
+            request.getSession().setAttribute("tipoMensaje", "success");
+        } else {
+            request.getSession().setAttribute("mensaje", "No se pudo registrar la venta.");
             request.getSession().setAttribute("tipoMensaje", "error");
         }
         response.sendRedirect("VentasController");
+    }
+
+    private void actualizarVenta(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Venta venta = new Venta();
+        venta.setIdVenta(Integer.parseInt(request.getParameter("id_venta")));
+        venta.setIdCliente(Integer.parseInt(request.getParameter("id_cliente")));
+        venta.setIdUsuario(Integer.parseInt(request.getParameter("id_usuario")));
+        venta.setFechaVenta(request.getParameter("fecha_venta"));
+        venta.setTotal(Double.parseDouble(request.getParameter("total")));
+        venta.setMetodoPago(request.getParameter("metodo_pago"));
+        venta.setEstado(request.getParameter("estado"));
+        venta.setObservaciones(request.getParameter("observaciones"));
+
+        int filasAfectadas = ventasModel.actualizarVenta(venta);
+
+        if (filasAfectadas > 0) {
+            request.getSession().setAttribute("mensaje", "Venta actualizada exitosamente.");
+            request.getSession().setAttribute("tipoMensaje", "success");
+        } else {
+            request.getSession().setAttribute("mensaje", "No se pudo actualizar la venta.");
+            request.getSession().setAttribute("tipoMensaje", "error");
+        }
+        response.sendRedirect("VentasController");
+    }
+
+    private void manejarError(HttpServletResponse response, String mensaje, Exception e) throws IOException {
+        e.printStackTrace();
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, mensaje);
     }
 }
