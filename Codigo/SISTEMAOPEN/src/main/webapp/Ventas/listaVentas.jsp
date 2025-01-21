@@ -43,12 +43,11 @@
     <!-- Main Content -->
     <div class="content-wrapper" id="content-wrapper">
         <div class="table-container">
-            <h1 class="text-center mb-4">Productos Registrados</h1>
+            <h1 class="text-center mb-4">Ventas Registradas</h1>
 
-            <!-- Botón para abrir el modal de crear producto -->
-            <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#modalNuevoProducto">
-                + Crear Nuevo Producto
-            </button>
+<button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#modalNuevaVenta">
+    + Realizar una venta
+</button>
 
             <!-- Tabla de productos -->
             <div class="table-responsive">
@@ -65,11 +64,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% 
-                        List<Producto> listaProductos = (List<Producto>) request.getAttribute("listaProductos");
-                        if (listaProductos != null) {
-                            for (Producto producto : listaProductos) {
-                        %>
+                       
                         <tr>
 
                                 <!-- Ícono para abrir el modal de edición con tooltip -->
@@ -84,14 +79,11 @@
                                 </svg>
                             </td>
                         </tr>
-                        <% 
-                            }
-                        } else { 
-                        %>
+
                         <tr>
                             <td colspan="7" class="text-center">No hay productos registrados.</td>
                         </tr>
-                        <% } %>
+                  
                     </tbody>
                 </table>
             </div>
@@ -99,8 +91,8 @@
     </div>
 
     <!-- Modales -->
-    <jsp:include page="/Modals/modalNuevoProducto.jsp" />
-    <jsp:include page="/Modals/modalEditarProducto.jsp" />
+    <jsp:include page="/Modals/modalEditarVenta.jsp" />
+    <jsp:include page="/Modals/modalNuevaVenta.jsp" />
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
