@@ -195,7 +195,7 @@ CREATE TABLE `productos` (
   PRIMARY KEY (`id_producto`),
   KEY `fk_categoria` (`categoria`),
   CONSTRAINT `fk_categoria` FOREIGN KEY (`categoria`) REFERENCES `categoria` (`id_categoria`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -204,7 +204,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-INSERT INTO `productos` VALUES (1,'Producto A','Descripción del producto A',50.00,100,1),(2,'Producto B','Descripción del producto B',100.00,50,1);
+INSERT INTO `productos` VALUES (1,'Producto A','Descripción del producto A',50.00,100,1),(2,'Producto B','Descripción del producto B',100.00,50,1),(3,'producto C','todo referente a productos',12.00,11,8),(4,'Inka','wrfcwf',12.00,11,1),(5,'coca','bebida',12.00,145,8),(6,'Inka','asdasdsas',12.00,11,8),(7,'sadsad','sadassad',12.00,13,8),(8,'dsada','sadasdasdasda',12.00,33,3);
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -254,7 +254,7 @@ CREATE TABLE `usuarios` (
   `estado` int NOT NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `nombre_usuario` (`nombre_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -263,7 +263,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (2,'pepe1','figueroa','nunez',20,'M','pepe@gmail.com','1234567','12','administrador','2025-01-11 21:56:16',1),(3,'juanito','arenales','pinedo',20,'M','juanito@gmail.com','12345677','123','administrador','2025-01-12 13:28:27',0),(4,'fabian','fernandez','peperere',22,'M','fabian@gmail.com','12345678','12','administrador','2025-01-12 21:48:01',1),(5,'jorge','perez','peperere',20,'M','jorge@gmail.com','62906799','123','administrador','2025-01-12 21:54:12',1),(6,'visca barca','Bernaleo','cataluna',12,'M','barcelona@gmail.com','2345','claveSecreta123','administrador','2025-01-12 21:57:04',1),(7,'rafael','arenales','velaa',24,'M','rafael@gmail.com','62906799','12','administrador','2025-01-13 03:49:31',1),(9,'rafael1','perez','pinedo',13,'M','rafaelj@gmail.com','62906798','M2','usuario','2025-01-13 04:31:02',0),(11,'pio','pio','pio',44,'F','pio@gmail.com','12345','SignatureAlgorithm.HS256','administrador','2025-01-17 11:35:33',1),(12,'sdfg','sdfg','sdfg',26,'M','juanito11@gmail.com','1234544','2345','usuario','2025-01-17 16:54:59',0);
+INSERT INTO `usuarios` VALUES (2,'pepe1','figueroa','nunez',20,'M','pepe@gmail.com','1234567','12','administrador','2025-01-11 21:56:16',1),(3,'juanito','arenales','pinedo',20,'M','juanito@gmail.com','12345677','123','administrador','2025-01-12 13:28:27',0),(4,'fabian','fernandez','peperere',22,'M','fabian@gmail.com','12345678','12','administrador','2025-01-12 21:48:01',1),(5,'jorge','perez','peperere',20,'M','jorge@gmail.com','62906799','123','administrador','2025-01-12 21:54:12',1),(6,'visca barca','Bernaleo','cataluna',12,'M','barcelona@gmail.com','2345','claveSecreta123','administrador','2025-01-12 21:57:04',1),(7,'rafael','arenales','velaa',24,'M','rafael@gmail.com','62906799','12','administrador','2025-01-13 03:49:31',1),(9,'rafael1','perez','pinedo',13,'M','rafaelj@gmail.com','62906798','M2','usuario','2025-01-13 04:31:02',0),(11,'pio','pio','pio',44,'F','pio@gmail.com','12345','SignatureAlgorithm.HS256','administrador','2025-01-17 11:35:33',1),(12,'sdfg','sdfg','sdfg',26,'M','juanito11@gmail.com','1234544','2345','usuario','2025-01-17 16:54:59',0),(17,'sancho','sdadas','sadasasdas',23,'M','pipo@gmail.com','11111111','Almacen123@','administrador','2025-01-20 21:39:42',1),(20,'kaka','sdadas','sadasasdas',23,'M','pipo@gmail.com','11111111','Almacen123@','administrador','2025-01-20 21:44:15',1),(22,'Jordin','trujillo','villar',24,'M','jordin@gmail.com','87654321','Almacen321','administrador','2025-01-20 21:57:11',1),(26,'guadalupo','afgvgv','dsfgdg',45,'M','sanson@gmail.com','34455446','Almacen12334','administrador','2025-01-20 22:19:21',1);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -379,6 +379,42 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_actualizarVenta` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_actualizarVenta`(IN p_id_venta INT,
+    IN p_id_cliente INT,
+    IN p_id_usuario INT,
+    IN p_fecha_venta DATETIME,
+    IN p_total DECIMAL(10,2),
+    IN p_metodo_pago ENUM('efectivo', 'tarjeta'),
+    IN p_estado ENUM('completada', 'pendiente', 'cancelada'),
+    IN p_observaciones TEXT
+)
+BEGIN
+ UPDATE ventas
+    SET id_cliente = p_id_cliente,
+        id_usuario = p_id_usuario,
+        fecha_venta = p_fecha_venta,
+        total = p_total,
+        metodo_pago = p_metodo_pago,
+        estado = p_estado,
+        observaciones = p_observaciones
+    WHERE id_venta = p_id_venta;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `sp_autenticarUsuario` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -394,7 +430,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_autenticarUsuario`(
     IN p_contrasena VARCHAR(255)
 )
 BEGIN
-    SELECT id_usuario, nombre_usuario, correo, contrasena, rol, estado
+    SELECT id_usuario, nombre_usuario, apellido_paterno, apellido_materno, correo, contrasena, rol, estado
     FROM usuarios
     WHERE correo = p_correo AND contrasena = p_contrasena;
 END ;;
@@ -486,12 +522,42 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ingresarProducto`(
     IN p_nombre_producto VARCHAR(100),
+    IN p_descripcion VARCHAR(255),
     IN p_precio DOUBLE,
-    IN p_stock INT
+    IN p_stock INT,
+    IN p_categoria INT
 )
 BEGIN
-    INSERT INTO productos (nombre_producto, precio, stock)
-    VALUES (p_nombre_producto, p_precio, p_stock);
+    INSERT INTO productos (nombre_producto, descripcion, precio, stock, categoria)
+    VALUES (p_nombre_producto, p_descripcion, p_precio, p_stock, p_categoria);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_ingresarVenta` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ingresarVenta`(IN p_id_cliente INT,
+    IN p_id_usuario INT,
+    IN p_fecha_venta DATETIME,
+    IN p_total DECIMAL(10,2),
+    IN p_metodo_pago ENUM('efectivo', 'tarjeta'),
+    IN p_estado ENUM('completada', 'pendiente', 'cancelada'),
+    IN p_observaciones TEXT
+)
+BEGIN
+ INSERT INTO ventas (id_cliente, id_usuario, fecha_venta, total, metodo_pago, estado, observaciones)
+    VALUES (p_id_cliente, p_id_usuario, p_fecha_venta, p_total, p_metodo_pago, p_estado, p_observaciones);
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -510,24 +576,24 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertarUsuario`(
     IN p_nombre_usuario VARCHAR(50),
-    IN p_correo VARCHAR(100),
-    IN p_contrasena VARCHAR(100),
-    IN p_rol VARCHAR(50),
-    IN p_dni VARCHAR(15),
-    IN p_apellido_paterno VARCHAR(50),
-    IN p_apellido_materno VARCHAR(50),
+    IN p_apellido_paterno VARCHAR(100),
+    IN p_apellido_materno VARCHAR(100),
     IN p_edad INT,
-    IN p_sexo CHAR(1),
+    IN p_sexo ENUM('M', 'F'),
+    IN p_correo VARCHAR(100),
+    IN p_dni VARCHAR(8),
+    IN p_contrasena VARCHAR(45),
+    IN p_rol ENUM('administrador', 'usuario'),
     IN p_estado INT
 )
 BEGIN
     INSERT INTO usuarios (
-        nombre_usuario, correo, contrasena, rol, dni, 
-        apellido_paterno, apellido_materno, edad, sexo, estado
+        nombre_usuario, apellido_paterno, apellido_materno, edad, sexo, 
+        correo, dni, contrasena, rol, estado
     )
     VALUES (
-        p_nombre_usuario, p_correo, p_contrasena, p_rol, p_dni, 
-        p_apellido_paterno, p_apellido_materno, p_edad, p_sexo, p_estado
+        p_nombre_usuario, p_apellido_paterno, p_apellido_materno, p_edad, p_sexo, 
+        p_correo, p_dni, p_contrasena, p_rol, p_estado
     );
 END ;;
 DELIMITER ;
@@ -548,7 +614,7 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarCategorias`()
 BEGIN
     SELECT id_categoria, nombre_categoria
-    FROM categorias;
+    FROM categoria;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -589,6 +655,25 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarUsuarios`(
 )
 BEGIN
    select * from usuarios;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_listarVentas` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_listarVentas`()
+BEGIN
+select * from ventas;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -716,4 +801,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-20  2:34:09
+-- Dump completed on 2025-01-20 23:36:11
